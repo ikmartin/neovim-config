@@ -118,7 +118,7 @@ call plug#begin()
 		let g:vimtex_complete_enabled=1
 
     " Completion / linters / formatters
-    Plug 'neoclide/coc.nvim',  {'branch': 'master', 'do': 'yarn install'}
+    Plug 'neoclide/coc.nvim',  {'branch': 'release'}
     Plug 'plasticboy/vim-markdown'
 
     " Git
@@ -129,6 +129,9 @@ call plug#begin()
 
 call plug#end()
 
+" allow for file type specific configuration
+filetype plugin indent on
+
 " File browser settings, show things like .config and .bash 
 let NERDTreeShowHidden=1
 
@@ -136,7 +139,6 @@ let NERDTreeShowHidden=1
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 " colorscheme settings
-filetype plugin indent on
 syntax on
 colorscheme onehalfdark
 " colorscheme nord
