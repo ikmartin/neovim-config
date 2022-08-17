@@ -18,9 +18,6 @@ set title " shows file title
 set ttimeoutlen=0 " time in milliseconds to run commands
 set wildmenu " show more advanced menu for auto-completion
 
-" keep cushion of lines above and below cursor
-set scrolloff=7
-
 " Tabs size
 set expandtab
 set shiftwidth=4
@@ -89,8 +86,12 @@ call plug#begin()
 	" Appearance
     Plug 'sonph/onehalf', { 'rtp': 'vim' } " color scheme choice 1
     Plug 'arcticicestudio/nord-vim' " color scheme choice 2
-    Plug 'vim-airline/vim-airline'
     Plug 'ryanoasis/vim-devicons'
+    Plug 'vim-airline/vim-airline'
+        " airline settings
+        let g:airline_theme='onehalfdark'
+        let g:airline_powerline_fonts = 1
+        "let g:airline#extensions#tabline#enabled = 1
 	Plug 'keitanakamura/tex-conceal.vim'
 		set conceallevel=1
 		let g:tex_conceal='abdmg'
@@ -142,11 +143,6 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 syntax on
 colorscheme onehalfdark
 " colorscheme nord
-"
-" airline settings
-let g:airline_theme='onehalfdark'
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
 
 " Language server stuff
 " run Prettier and format file on save
@@ -162,3 +158,63 @@ nnoremap <F6> :sp<CR>:terminal<CR>
 nnoremap <S-Tab> gT
 nnoremap <Tab> gt
 nnoremap <silent> <S-t> :tabnew<CR>
+
+" #### COC CONFIG #####
+"
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1):
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+" Make <CR> to accept selected completion item or notify coc.nvim to format
+" <C-g>u breaks current undo, please make your own choice.
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" Coc autocomplete using Ctrl-Space
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" ##########################################################################
+
+" Markdown configuration
+let g:vim_markdown_folding_disabled = 1
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_conceal = 0
+let g:vim_markdown_fenced_languages = ['tsx=typescriptreact']
+
+
+" keep cushion of lines above and below cursor
+set scrolloff=7
+
+" ###### AIRLINE CONFIG #############
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+" unicode symbols
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_symbols.linenr = '␊'
+let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = '¶'
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
+
+" airline symbols
+let g:airline_left_sep = ''
+let g:airline_left_alt_sep = ''
+let g:airline_right_sep = ''
+let g:airline_right_alt_sep = ''
+let g:airline_symbols.branch = ''
+let g:airline_symbols.readonly = ''
+let g:airline_symbols.linenr = ''
