@@ -23,6 +23,12 @@ set expandtab
 set shiftwidth=4
 set tabstop=4
 
+" folding settings
+set foldmethod=indent
+nnoremap <space> za
+vnoremap <space> zf
+set foldnestmax=2
+
 " enable 256 colors on the terminal
 set t_Co=256
 
@@ -81,16 +87,26 @@ inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 hi clear SpellBad
 hi SpellBad cterm=underline,bold ctermfg=red
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" remap commands
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" inkscape-figures
+inoremap <C-f> <Esc>: silent exec '.!inkscape-figures create "'.getline('.').'" "'.b:vimtex.root.'/figures/"'<CR><CR>:w<CR>
+nnoremap <C-f> : silent exec '!inkscape-figures edit "'.b:vimtex.root.'/figures/" > /dev/null 2>&1 &'<CR><CR>:redraw!<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " plug-ins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin()
 	" Appearance
     Plug 'sonph/onehalf', { 'rtp': 'vim' } " color scheme choice 1
     Plug 'arcticicestudio/nord-vim' " color scheme choice 2
     Plug 'ryanoasis/vim-devicons'
-    Plug 'vim-airline/vim-airline'
+    "Plug 'vim-airline/vim-airline'
         " airline settings
-        let g:airline_theme='onehalfdark'
-        let g:airline_powerline_fonts = 1
+        "let g:airline_theme='onehalfdark'
+        "let g:airline_powerline_fonts = 0
         "let g:airline#extensions#tabline#enabled = 1
 	Plug 'keitanakamura/tex-conceal.vim'
 		set conceallevel=1
