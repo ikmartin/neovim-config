@@ -7,8 +7,8 @@
 set background=dark " apply color set for dark screens
 set clipboard=unnamedplus " enable clipboard between vim/neovim and other applications
 set completeopt=noinsert,menuone,noselect " autocomplete menu behaves like ide
-set cursorline
 set hidden " hide unused buffers
+set nocursorline
 set inccommand=split " show replacements in a split screen
 set mouse=a " allows use of mouse in editor
 set number " display line numbers
@@ -25,6 +25,7 @@ set tabstop=4
 
 " folding settings
 set foldmethod=indent
+set foldlevel=99
 nnoremap <space> za
 vnoremap <space> zf
 set foldnestmax=2
@@ -47,9 +48,6 @@ endif
 " Italics
 let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
-
-" continue indent on wrapped lines
-set breakindent
 
 " File browser
 let g:netrw_banner=0
@@ -76,7 +74,16 @@ augroup auto_commands
     autocmd filetype netrw call Netrw_mappings()
 augroup END
 
+"""""""""""""""""""""""""""""""""""""""""""""
+""" Remappings
+"""""""""""""""""""""""""""""""""""""""""""""
+noremap gj j
+noremap j gj
+noremap k gk
+noremap gk k
+
 " indent by an additional 2 characters on wrapped lines, when line >= 40 characters, put 'showbreak' at start of line
+set breakindent
 set breakindentopt=shift:0,min:40,sbr
 set showbreak=>>  " append '>>' to indent
 
@@ -88,14 +95,6 @@ hi clear SpellBad
 hi SpellBad cterm=underline,bold ctermfg=red
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" remap commands
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" inkscape-figures
-inoremap <C-f> <Esc>: silent exec '.!inkscape-figures create "'.getline('.').'" "'.b:vimtex.root.'/figures/"'<CR><CR>:w<CR>
-nnoremap <C-f> : silent exec '!inkscape-figures edit "'.b:vimtex.root.'/figures/" > /dev/null 2>&1 &'<CR><CR>:redraw!<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " plug-ins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#begin()
@@ -103,11 +102,6 @@ call plug#begin()
     Plug 'sonph/onehalf', { 'rtp': 'vim' } " color scheme choice 1
     Plug 'arcticicestudio/nord-vim' " color scheme choice 2
     Plug 'ryanoasis/vim-devicons'
-    "Plug 'vim-airline/vim-airline'
-        " airline settings
-        "let g:airline_theme='onehalfdark'
-        "let g:airline_powerline_fonts = 0
-        "let g:airline#extensions#tabline#enabled = 1
 	Plug 'keitanakamura/tex-conceal.vim'
 		set conceallevel=1
 		let g:tex_conceal='abdmg'
@@ -116,9 +110,6 @@ call plug#begin()
     " Utilities
     Plug 'sheerun/vim-polyglot'
     Plug 'ap/vim-css-color'
-    Plug 'preservim/nerdtree'	
-    Plug 'jiangmiao/auto-pairs'
-    	let g:AutoPairs={'(':')', '[':']', '{':'}','"':'"', '`':'`'}
 	Plug 'SirVer/ultisnips'   
 		let g:UltiSnipsExpandTrigger = '<tab>'
 		let g:UltiSnipsJumpForwardTrigger = '<tab>'
@@ -140,10 +131,6 @@ call plug#begin()
 
     " Git
     Plug 'airblade/vim-gitgutter'
-
-    " solely used for syntax highlighting in sxhkd configuration files
-    Plug 'kovetskiy/sxhkd-vim'
-
 call plug#end()
 
 " allow for file type specific configuration
@@ -167,7 +154,6 @@ command! -nargs=0 Prettier :call CocAction('runCommand', 'prettier.formatFile')
 " Normal mode remappings
 nnoremap <C-q> :q!<CR>
 nnoremap <F4> :bd<CR>
-nnoremap <F5> :NERDTreeToggle<CR>
 nnoremap <F6> :sp<CR>:terminal<CR>
 
 " Tabs
@@ -180,20 +166,24 @@ nnoremap <silent> <S-t> :tabnew<CR>
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
-inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(1):
-      \ CheckBackspace() ? "\<Tab>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+" inoremap <silent><expr> <TAB>
+ "     \ coc#pum#visible() ? coc#pum#next(1):
+ "     \ CheckBackspace() ? "\<Tab>" :
+ "     \ coc#refresh()
+"inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>
 
 " Make <CR> to accept selected completion item or notify coc.nvim to format
 " <C-g>u breaks current undo, please make your own choice.
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+"inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " Coc autocomplete using Ctrl-Space
-inoremap <silent><expr> <c-space> coc#refresh()
+"inoremap <silent><expr> <c-space> coc#refresh()
 
 " ##########################################################################
+
+" Python configuration
+let g:python3_host_prog = '~/.pyenv/versions/neovim/bin/python3.10'
+let g:coc_global_extensions = [ 'coc-pyright' ]
 
 " Markdown configuration
 let g:vim_markdown_folding_disabled = 1
@@ -203,34 +193,4 @@ let g:vim_markdown_fenced_languages = ['tsx=typescriptreact']
 
 
 " keep cushion of lines above and below cursor
-set scrolloff=7
-
-" ###### AIRLINE CONFIG #############
-let g:airline_powerline_fonts = 1
-
-if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-endif
-
-" unicode symbols
-let g:airline_left_sep = '»'
-let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
-let g:airline_right_sep = '◀'
-let g:airline_symbols.linenr = '␊'
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.linenr = '¶'
-let g:airline_symbols.branch = '⎇'
-let g:airline_symbols.paste = 'ρ'
-let g:airline_symbols.paste = 'Þ'
-let g:airline_symbols.paste = '∥'
-let g:airline_symbols.whitespace = 'Ξ'
-
-" airline symbols
-let g:airline_left_sep = ''
-let g:airline_left_alt_sep = ''
-let g:airline_right_sep = ''
-let g:airline_right_alt_sep = ''
-let g:airline_symbols.branch = ''
-let g:airline_symbols.readonly = ''
-let g:airline_symbols.linenr = ''
+set scrolloff=10

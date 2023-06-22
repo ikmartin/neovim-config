@@ -32,6 +32,12 @@ snippet beg "begin{} / end{}" bA
 \end{$1}
 endsnippet
 
+# \left(...\right)
+context "math()"
+snippet inv "inverse" iA
+^{-1}
+endsnippet
+
 # begin theorem environment
 snippet fthm "begin theorem environment" bA
 \begin{$1}[$2]\label{$3}
@@ -46,7 +52,7 @@ snippet thm "begin theorem environment" bA
 \end{$1}$0
 endsnippet
 
-snippet defn "begin theorem environment" bA
+snippet defn "begin definition environment" bA
 \begin{defn}\label{defn:$1}
 	$0
 \end{defn}
@@ -104,7 +110,7 @@ snippet iso "isomorphism" wA
 endsnippet
 
 # snippet for making an array environment quickly
-snippet array "Array environment" wA
+snippet array "Array environment" w
 \\begin{array}{$1}
 	$2
 \\end{array}$0
@@ -179,11 +185,6 @@ endsnippet
 # basic fraction
 snippet // "Fraction" iA
 \\frac{$1}{$2}$0
-endsnippet
-
-# advanced fraction with regex
-snippet '((\d+)|(\d*)(\\)?([A-Za-z]+)((\^|_)(\{\d+\}|\d))*)/' "Fraction" wr
-\\frac{`!p snip.rv  = match.group(1)`}{$1}$0
 endsnippet
 
 # advanced fraction with parentheses matching
