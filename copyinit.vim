@@ -136,6 +136,9 @@ call plug#end()
 " allow for file type specific configuration
 filetype plugin indent on
 
+" File browser settings, show things like .config and .bash 
+let NERDTreeShowHidden=1
+
 " enable file search in your project's folder
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
@@ -153,10 +156,12 @@ nnoremap <C-q> :q!<CR>
 nnoremap <F4> :bd<CR>
 nnoremap <F6> :sp<CR>:terminal<CR>
 
+" Tabs
+"nnoremap <S-Tab> gT
+"nnoremap <Tab> gt
+"nnoremap <silent> <S-t> :tabnew<CR>
 
 " #### COC CONFIG #####
-" autocomplete on enter
-inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
 " Python configuration
 let g:python3_host_prog = '~/.pyenv/versions/neovim/bin/python3.11'
